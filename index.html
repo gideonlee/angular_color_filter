@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en' ng-app='App'>
+<head>
+	<meta charset='utf-8'>
+	<meta name='content' description='Learning to use ng-filter on Angular'>
+	<title>Color Filter</title>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+	<style>
+		.table {
+			width: 300px;
+		}
+	</style>
+	<script src='node_modules/angular/angular.js'></script>
+	<script>
+		var app = angular.module('App', []);
+
+		app.controller('MainController', ['$scope', '$http', function($scope, $http) {
+			$http.get('/colors').then(function(response) {
+				$scope.colors = response.data;
+			});
+		}]);
+	</script>
+</head>
+<body>
+	<div class='container' ng-controller='MainController'>
+		<h1>HEX Colors with Colornames</h1>
+		<form>
+			<label>Filter: </label>
+			<input type='text' ng-model='filterColor' placeholder='color name or HEX value'>
+		</form>
+		<table class='table'>
+			<thead>
+				<tr>
+					<th>Color Name</th>
+					<th>HEX</th>
+					<th>Color</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat='color in colors | filter: filterColor'>
+					<td>{{color.value}}</td>
+					<td>{{color.name}}</td>
+					<td style='background-color:{{color.value}}'></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
